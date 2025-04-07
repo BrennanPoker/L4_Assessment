@@ -80,42 +80,37 @@ infinite mode).
 You will have to solve different area and perimeter problems.
 Try to get as many problems correct for a higher final score.
 
-Press <xxx> to end the game at any time.
+Press <xxx> to end the quiz at any time.
 
 Good Luck!
     ''')
 
 
-# Makes sure user enters a number thats higher than 0
+# Makes sure user enters a number that is higher than 0
 def int_check(question):
-    """ Makes sure user enters a number which is higher than 0 """
+    """Makes sure user enters a valid number or 'xxx' to quit."""
     while True:
-        error = "Please enter a number that is more than 0\n"
-        response = input(question)
+        response = input(question).lower()
 
+        if response == "xxx":
+            return response
         if response == "":
             return "infinite"
-        if response.lower() == "xxx":
-            return "xxx"
 
         try:
-            response = int(response)
-            if response > 0:
-                return response
-            else:
-                print(error)
+            return int(response)
         except ValueError:
-            print(error)
+            print("❌ Invalid input! Please enter a number or 'xxx' to exit. ❌")
 
 
 # Main Routine Starts here
 
-# Initialise game variables
+# Initialise quiz variables
 mode = "regular"
 rounds_played = 0
-game_history = []
+quiz_history = []
 
-# welcomes user to the game
+# welcomes user to the quiz
 print("☐▭🛆 Welcome to Area and Perimeter Quiz 🛆▭☐")
 print()
 
@@ -132,13 +127,13 @@ if num_rounds == "infinite":
     mode = "infinite"
     num_rounds = 5
 
-# Game loop starts here
+# Quiz loop starts here
 score = 0
 while rounds_played < num_rounds:
     if mode == "infinite":
         rounds_heading = f"\n🏳️🏴🏳️ Round {rounds_played + 1} (infinite mode) 🏳️🏴🏳️"
     else:
-        rounds_heading = f"\n💿💿💿 Round {rounds_played + 1} of {num_rounds}"
+        rounds_heading = f"\n💿💿💿 Round {rounds_played + 1} of {num_rounds} 💿💿💿"
 
     print(rounds_heading)
     print()
@@ -148,22 +143,19 @@ while rounds_played < num_rounds:
 
     # Ask perimeter and area question and get the user's answer
     print(question)
-    user_answer = input("Answer: ")
+    user_answer = int_check("Answer: ")
 
     # Check for quit condition
-    if user_answer.lower() == "xxx":
+    if user_answer == "xxx":
         print("You have exited the quiz.")
         break
 
     # Check if the user answered correctly
-    try:
-        if float(user_answer) == correct_answer:
-            print("Correct!\n")
-            score += 1
-        else:
-            print(f"Incorrect. The correct answer was {correct_answer}\n")
-    except ValueError:
-        print(f"Invalid input. The correct answer was {correct_answer}\n")
+    if user_answer == correct_answer:
+        print("Correct!\n")
+        score += 1
+    else:
+        print(f"Incorrect. The correct answer was {correct_answer}\n")
 
     rounds_played += 1
 
@@ -172,39 +164,41 @@ while rounds_played < num_rounds:
         num_rounds += 1
 
     # Gives user feedback
-    if user_answer == correct_answer:
+    if float(user_answer) == correct_answer:
         feedback = "Correct!"
     else:
         feedback = "Wrong!"
 
-    # Add round result to game history
+    # Add round result to quiz history
     history_feedback = f"Round {rounds_played}: {feedback}"
-    game_history.append(history_feedback)
+    quiz_history.append(history_feedback)
 
-# Game loop ends here
+# Quiz loop ends here
 
 
-# Game History / Statistics area
+# Quiz History / Statistics area
 if rounds_played > 0:
 
-    wrong = score - rounds_played
-
-    # Output Game Statistics
+    # Output Quiz Statistics
     print("\n📊📊📊 RESULTS 📊📊📊")
     if score == 0:
         print("Oh no! You got None Right... Better Luck Next Time")
 
+    if rounds_played == score:
+        print("You got every answer correct! Congratulations!")
+        print(f"Your score is {score} out of {rounds_played}")
+
     else:
         print(f"👍 Your score is {score} out of {rounds_played} 👎")
 
-    # Asks if they want game history
+    # Asks if they want quiz history
     while True:
-        ask_history = string_checker("\nDo you want game history? ")
+        ask_history = string_checker("\nDo you want quiz history? ")
 
         ask_history = ask_history.lower()
 
         if ask_history == "yes":
-            for item in game_history:
+            for item in quiz_history:
                 print(item)
             break
 
