@@ -23,7 +23,7 @@ def string_checker(question, valid_ans=('yes', 'no')):
         print()
 
 
-# functions go here
+# functions go here+
 
 def yes_no(question):
     while True:

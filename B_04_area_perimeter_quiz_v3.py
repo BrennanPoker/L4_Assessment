@@ -19,11 +19,6 @@ def generate_problem(problem_type):
         problem = f"A rectangle has a base of {base}km and a height of {height}km. What is the perimeter?"
         answer = perimeter
 
-    elif problem_type == "area_triangle":
-        area_t = (base * height) / 2
-        problem = f"A triangle has a base of {base}mm and a height of {height}mm. What is the area?"
-        answer = area_t
-
     elif problem_type == "perimeter_square":
         solution = side * 4
         problem = f"One side of a square is equal to {side}m. What is the perimeter?"
@@ -48,8 +43,8 @@ def generate_problem(problem_type):
 # Prints the random problem question
 def generate_random_question():
     """ Selects a random problem from generate_problem """
-    question_type = random.choice(["area_square", "perimeter_rectangle", "area_triangle",
-                                   "perimeter_square", "area_rectangle", "perimeter_triangle"])
+    question_type = random.choice(["area_square", "perimeter_rectangle", "perimeter_square",
+                                   "area_rectangle", "perimeter_triangle"])
     return generate_problem(question_type)
 
 
@@ -86,7 +81,7 @@ Good Luck!
     ''')
 
 
-# Makes sure user enters a number that is higher than 0
+# Makes sure user enters a valid number or xxx to quit
 def int_check(question):
     """Makes sure user enters a valid number or 'xxx' to quit."""
     while True:
@@ -96,11 +91,14 @@ def int_check(question):
             return response
         if response == "":
             return "infinite"
+        if response == "0":
+            print("❌ Enter a number greater than 0 ❌")
+            continue
 
         try:
             return int(response)
         except ValueError:
-            print("❌ Invalid input! Please enter a number or 'xxx' to exit. ❌")
+            print("❌ Invalid input! Please enter a valid number. ❌")
 
 
 # Main Routine Starts here

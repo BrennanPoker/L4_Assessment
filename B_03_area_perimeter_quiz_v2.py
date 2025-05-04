@@ -1,30 +1,61 @@
-# Functions go here
-# Check that users have entered a valid
-# option based on a list
+import random
+
+
+# Functions to generate random questions
+def generate_area_square_problem():
+    height = random.randint(1, 15)
+    width = random.randint(1, 15)
+    area = height * width
+    problem = f"The height of the square is {height}m and the width is {width}m. What is the area?"
+    answer = area
+    return problem, answer
+
+
+def generate_perimeter_rectangle_problem():
+    base = random.randint(1, 15)
+    height = random.randint(1, 15)
+    perimeter = 2 * (base + height)
+    problem = f"A rectangle has a base of {base}km and a height of {height}km. What is the perimeter?"
+    answer = perimeter
+    return problem, answer
+
+
+def generate_area_triangle_problem():
+    base = random.randint(5, 15)
+    height_t = random.randint(1, 10)
+    area_t = (base * height_t) / 2
+    problem = f"A triangle has a base of {base}mm and a height of {height_t}mm. What is the area?"
+    answer = area_t
+    return problem, answer
+
+
+def generate_random_question():
+    question_type = random.choice([
+        'area_square', 'perimeter_rectangle', 'area_triangle'
+    ])
+
+    if question_type == 'area_square':
+        return generate_area_square_problem()
+    elif question_type == 'perimeter_rectangle':
+        return generate_perimeter_rectangle_problem()
+    elif question_type == 'area_triangle':
+        return generate_area_triangle_problem()
+
+
+# Functions to check user input
 def string_checker(question, valid_ans=('yes', 'no')):
     error = f"Please enter a valid option from the following list: {valid_ans}"
 
     while True:
-
-        # Get user response and make sure it's lowercase
         user_response = input(question).lower()
-
         for item in valid_ans:
-            # check if the user response is a word in the list
             if item == user_response:
                 return item
-
-            # check if the user response is the same as
-            # the first letter of an item in the list
             elif user_response == item[0]:
                 return item
-
-        # print error if user does not enter something that is valid
         print(error)
-        print()
 
 
-# Displays instructions
 def instructions():
     print(''' 
 *** Instructions ***
@@ -33,20 +64,17 @@ To begin, choose the number of rounds (or press <enter> for
 infinite mode).
 
 You will have to solve different area and perimeter problems.
-Try get as much problems correct for a higher final score.
+Try to get as many problems correct for a higher final score.
 
-Press <xxx> to end game at anytime.
+Press <xxx> to end the game at any time.
 
 Good Luck!
     ''')
 
 
-# Checks user enters an integer more than / equal to 0
 def int_check(question):
     while True:
         error = "Please enter a number that is more than 0\n"
-
-        # check for infinite mode when input is empty (user presses enter)
         response = input(question)
 
         if response == "":
@@ -56,13 +84,10 @@ def int_check(question):
 
         try:
             response = int(response)
-
-            # check that the number is more than zero
             if response > 0:
                 return response
             else:
                 print(error)
-
         except ValueError:
             print(error)
 
@@ -72,20 +97,16 @@ def int_check(question):
 # Initialise game variables
 mode = "regular"
 rounds_played = 0
-
-shape_list = ["Square", "Rectangle", "Triangle"]
 game_history = []
 all_scores = []
 
 # welcomes user to the game
-print("☐▭🛆 Welcome to Area and Perimeter Game 🛆▭☐")
+print("☐▭🛆 Welcome to Area and Perimeter Quiz 🛆▭☐")
 print()
 
 # Instructions
-
 want_instructions = string_checker("Do you want to read the instructions? ")
 
-# if the user wants instructions then print instructions
 if want_instructions == "yes":
     instructions()
 
@@ -97,9 +118,8 @@ if num_rounds == "infinite":
     num_rounds = 5
 
 # Game loop starts here
+score = 0  # To track score
 while rounds_played < num_rounds:
-
-    # Rounds headings
     if mode == "infinite":
         rounds_heading = f"\n🏳️🏴🏳️ Round {rounds_played + 1} (infinite mode) 🏳️🏴🏳️"
     else:
@@ -108,19 +128,33 @@ while rounds_played < num_rounds:
     print(rounds_heading)
     print()
 
-    # get user choice
-    user_choice = int_check("Answer: ")
+    # Generate a random question
+    question, correct_answer = generate_random_question()
 
-    # if user choice is the exit code, break the loop
-    if user_choice == "xxx":
+    # Ask perimeter and area question and get the user's answer
+    print(question)
+    user_answer = input("Answer: ")
+
+    # Check for quit condition
+    if user_answer.lower() == "xxx":
+        print("You have exited the quiz.")
         break
+
+    # Check if the user answered correctly
+    try:
+        if float(user_answer) == correct_answer:
+            print("Correct!\n")
+            score += 1
+        else:
+            print(f"Incorrect. The correct answer was {correct_answer}\n")
+    except ValueError:
+        print(f"Invalid input. The correct answer was {correct_answer}\n")
 
     rounds_played += 1
 
-    # if users are in infinite mode, increase number of rounds!
+    # If users are in infinite mode, increase the number of rounds
     if mode == "infinite":
         num_rounds += 1
-
 # Game loop ends here
 
 # check users have played at least one round
@@ -141,7 +175,7 @@ if rounds_played > 0:
 
     # Display the game history on request!
     while True:
-        ask_history = string_checker("\nDo you want game history? ")
+        ask_history = string_checker("\nDo you want quiz history? ")
 
         ask_history = ask_history.lower()
 
@@ -153,8 +187,7 @@ if rounds_played > 0:
         elif ask_history == "no":
             break
 
-    print("\n🖥️ Thank you for playing HL with me! 🖥️")
+    print("\nThank you for participating in this Quiz")
 
 else:
     print("🐔🐔🐔 Oops - You chickened out! 🐔🐔🐔")
-
