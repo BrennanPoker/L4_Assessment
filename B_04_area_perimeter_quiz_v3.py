@@ -168,7 +168,8 @@ while rounds_played < num_rounds:
         feedback = "Wrong!"
 
     # Add round result to quiz history
-    history_feedback = f"Round {rounds_played}: {feedback}"
+    history_feedback = f"Round {rounds_played}: {feedback} - {question} | Your Answer: {user_answer} / " \
+                       f"Correct answer: {correct_answer}"
     quiz_history.append(history_feedback)
 
 # Quiz loop ends here
