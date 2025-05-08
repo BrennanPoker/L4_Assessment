@@ -4,10 +4,9 @@ import random
 # Problem generator
 def generate_problem(problem_type):
     """ Generates a problem for user to solve"""
-    height = random.randint(1, 15)
-    width = random.randint(1, 15)
-    base = random.randint(5, 15)
-    side = random.randint(1, 15)
+    global problem, answer
+    height = random.randint(1, 20)
+    width = random.randint(5, 20)
 
     if problem_type == "area_square":
         area = height * width
@@ -15,13 +14,13 @@ def generate_problem(problem_type):
         answer = area
 
     elif problem_type == "perimeter_rectangle":
-        perimeter = 2 * (base + height)
-        problem = f"A rectangle has a base of {base}km and a height of {height}km. What is the perimeter?"
+        perimeter = 2 * (width + height)
+        problem = f"A rectangle has a base of {width}km and a height of {height}km. What is the perimeter?"
         answer = perimeter
 
     elif problem_type == "perimeter_square":
-        solution = side * 4
-        problem = f"One side of a square is equal to {side}m. What is the perimeter?"
+        solution = height * 4
+        problem = f"One side of a square is equal to {height}m. What is the perimeter?"
         answer = solution
 
     elif problem_type == "area_rectangle":
@@ -30,12 +29,9 @@ def generate_problem(problem_type):
         answer = area_r
 
     elif problem_type == "perimeter_triangle":
-        perimeter_t = side * 3
-        problem = f"One side of an equilateral triangle is {side}mm. What is the perimeter?"
+        perimeter_t = height * 3
+        problem = f"One side of an equilateral triangle is {height}mm. What is the perimeter?"
         answer = perimeter_t
-
-    else:
-        raise ValueError("Invalid problem type")
 
     return problem, answer
 
@@ -91,7 +87,7 @@ def int_check(question):
             return response
         if response == "":
             return "infinite"
-        if response == "0":
+        if response < "0":
             print("❌ Enter a number greater than 0 ❌")
             continue
 
@@ -119,7 +115,7 @@ if want_instructions == "yes":
     instructions()
 
 # Ask user for number of rounds / infinite mode
-num_rounds = int_check("Rounds <enter for infinite>")
+num_rounds = int_check("Rounds <enter for infinite> ")
 
 if num_rounds == "infinite":
     mode = "infinite"
